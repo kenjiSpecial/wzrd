@@ -37,5 +37,9 @@ function listening(err) {
     console.error('error starting server', err)
     process.exit(1)
   }
-  console.error('server started at ' + (argv.https ? 'https' : 'http') + '://localhost:' + port)
+  console.error('server started at ' + (argv.https ? 'https' : 'http') + '://localhost:' + port);
+
+  // open 'http://localhost:9966/'
+  require("openurl").open("http://localhost:9966/");
+
 }

@@ -7,6 +7,7 @@ var fs = require('fs')
 var path = require('path')
 var spawn = require('npm-execspawn')
 var pem = require('pem')
+var ejs = require('ejs');
 
 module.exports.http = function(opts) {
   var handler = module.exports.static(opts)
@@ -31,22 +32,42 @@ module.exports.static = function(opts) {
     router.addRoute('/' + entry.to, function(req, res, params) {
       module.exports.browserify(entry.from, req, res)
     })
-  })
+  });
   
   router.addRoute('/', function(req, res, params) {
+    fs.exists(path.join(basedir, 'index.ejs'), function(exists){
+      var firstEntry = opts.entries[0].to;
+      console.log(firstEntry);
+
+      render(firstEntry, res);
+    });
+
+
+    /**
     fs.exists(path.join(basedir, 'index.html'), function(exists) {
       var firstEntry = opts.entries[0].to
       if (exists) return staticHandler(req, res)
       else module.exports.generateIndex(firstEntry, req, res)
     })
-  })
+    */
+  });
   
   router.addRoute('*', function(req, res, params) {
     console.log(req.url, '(static)')
     staticHandler(req, res)
-  })
+  });
   
   return router
+};
+
+function render(entry, res){
+  var str = fs.readFileSync(__dirname + '/index.ejs', 'utf8');
+  var output = ejs.render(str, {
+    jsFile : entry
+  });
+
+  res.setHeader('content-type', 'text/html');
+  res.end(output);
 }
 
 module.exports.browserify = function(entry, req, res) {
@@ -67,10 +88,10 @@ module.exports.browserify = function(entry, req, res) {
     console.timeEnd(message)
     res.end(buff)
   }))
-}
+};
 
 module.exports.generateIndex = function(entry, req, res) {
   console.log(req.url, '(generated)')
   res.setHeader('content-type', 'text/html')
   res.end('<!doctype html><head><meta charset="utf-8"></head><body><script src="' + entry + '"></script></body></html>')
-}
+};

@@ -1,7 +1,7 @@
 {
-  "name": "wzrd",
+  "name": "abcanvas",
   "version": "1.1.2",
-  "description": "Super minimal browserify development server. Inspired by [beefy](http://npmjs.org/beefy) but with less magic",
+  "description": "Super minimal browserify development server which make canvas prototype easy. forked from wzrd(https://github.com/maxogden/wzrd)",
   "bin": {
     "abcanvas": "bin.js"
   },
@@ -10,13 +10,15 @@
   "scripts": {
     "test": "node test/index.js"
   },
-  "author": "max ogden",
+  "author": "kenji saito",
   "license": "BSD",
   "dependencies": {
     "concat-stream": "^1.4.7",
     "ecstatic": "^0.5.8",
+    "ejs": "^2.2.2",
     "minimist": "^1.1.0",
     "npm-execspawn": "^1.0.6",
+    "openurl": "^1.1.0",
     "pem": "^1.4.4",
     "routes-router": "^4.1.1"
   },
